@@ -1,1 +1,2 @@
-qq-botpy
+qq-botpy==1.2.1
+peewee==3.17.6
