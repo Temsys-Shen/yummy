@@ -1,3 +1,4 @@
 botpy.log
 __pycache__
 .venv
+config.yaml
