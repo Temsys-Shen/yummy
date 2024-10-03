@@ -1,7 +1,7 @@
 import botpy
 from botpy.message import GroupMessage
 from botpy import logging
-from eating_group import group_related
+from eating_group import group_related, group_member_related
 
 _log = logging.get_logger()
 
@@ -13,11 +13,11 @@ class Client(botpy.Client):
         elif "/查车" in message.content:
             await group_related.search(message)
         elif "/上车" in message.content:
-            raise NotImplementedError("上车功能尚未实现")
+            await group_member_related.join(message)
         elif "下车" in message.content:
-            raise NotImplementedError("下车功能尚未实现")
+            await group_member_related.leave(message)
         elif "/收车" in message.content:
-            raise NotImplementedError("收车功能尚未实现")
+            await group_related.stop(message)
         else:
             messageResult = await message._api.post_group_message(
                 group_openid=message.group_openid,

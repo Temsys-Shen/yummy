@@ -1,3 +1,3 @@
 from .models import *
 
-db.create_tables([EatingGroup])
+db.create_tables([EatingGroup, EatingGroupMember])
