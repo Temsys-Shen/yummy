@@ -13,6 +13,10 @@ async def join(message: GroupMessage):
         name = contents[1]
         group:EatingGroup = EatingGroup.get(EatingGroup.id == group_id)
         
+        if "'" in name or '"' in name:
+            await message.reply(content="不要输入奇怪的东西哦")
+            return
+        
         # 重复上车
         if EatingGroupMember.select().where(
             (EatingGroupMember.group_id == group_id) & 

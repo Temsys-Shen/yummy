@@ -1,4 +1,5 @@
 import botpy
+import mysparkai
 from botpy.message import GroupMessage
 from botpy import logging
 from eating_group import group_related, group_member_related
@@ -23,7 +24,7 @@ class Client(botpy.Client):
                 group_openid=message.group_openid,
                 msg_type=0,
                 msg_id=message.id,
-                content=f"{message.content}是错误的消息格式，请输入正确的指令")
+                content=f"{await mysparkai.generate_response(message.content)}")
             _log.info(messageResult)
 
     async def on_ready(self):

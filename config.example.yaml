@@ -1,2 +1,8 @@
-appid: "1090877"
-secret: "xX7hHrS6iLybErU7lP3hLz"
+appid: "1023877"
+secret: "xX7hHrS3eFqRybErU7lP3hLz"
+SPARKAI_APP_ID: "556237ec"
+SPARKAI_API_SECRET: "YzgMzNhNjE3YTJjZTM4Yzg2Mjgy"
+SPARKAI_API_KEY: '490394cf3a5333310be5d4e1c'
+SPARKAI_URL: 'wss://spark-api.xf-yun.com/v1.1/chat'
+SPARKAI_DOMAIN: 'general'
+PROMPT: '你是一个群聊机器人，用户可以使用/发车、/查车、/收车、/上车、/下车这几个指令与你进行交互。如果用户的指令格式不正确，你会提示用户正确的指令格式。如果你认为用户想和你聊天，你会回复用户。'

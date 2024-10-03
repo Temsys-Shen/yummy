@@ -1,5 +1,5 @@
 from botpy.message import GroupMessage
-from .models import EatingGroup
+from .models import EatingGroup, EatingGroupMember
 import datetime
 import re
 
@@ -67,6 +67,8 @@ async def start(message: GroupMessage):
         await message.reply(content=f"发车成功！请确认信息：\n{feedback}")
     except ValueError as e:
         await message.reply(content=f"格式不对哦，{str(e)}\n{发车模板}")
+    except OverflowError:
+        await message.reply(content="你来当测试工程师吧")
 
 
 async def search(message: GroupMessage):
@@ -77,7 +79,6 @@ async def search(message: GroupMessage):
     2. /查车 车车ID：查看指定ID的车车
     """
     messages = message.content.strip().split("/查车",1)
-    print(messages)
     if messages[1].strip() == "":
         #/查车
         groups:list[EatingGroup] = EatingGroup.select().where(EatingGroup.end_time > datetime.datetime.now()).order_by(EatingGroup.publish_time.desc())
@@ -86,21 +87,23 @@ async def search(message: GroupMessage):
         elif len(groups) <=3:
             reply = ""
             for group in groups:
-                reply += f"【车车ID】：{group.id}\n【发起人】：{group.initiator}\n【餐厅名称】：{group.name}\n【餐厅地点】：{group.location}\n【结车时间】：{group.end_time}\n【备注】：{group.remark}\n"
-            reply = reply[:-1]
+                reply += f"【车车ID】：{group.id}\n【发起人】：{group.initiator}\n【餐厅名称】：{group.name}\n【餐厅地点】：{group.location}\n【发车时间】：{group.publish_time}\n【结车时间】：{group.end_time}\n【备注】：{group.remark}\n------\n"
+            reply = reply[:-8]
             await message.reply(content=reply)
         else:
             reply = "可以使用/查车 ID来查看详细信息\n"
             for group in groups:
-                reply += f"【车车ID】：{group.id}【发起人】：{group.initiator}\n"
+                reply += f"【车车ID】：{group.id}【发起人】：{group.initiator}【餐厅名称】：{group.name}\n"
             reply = reply[:-1]
             await message.reply(content=reply)
     else:
         #/查车 ID
         try:
             group_id = int(messages[1])
-            group = EatingGroup.get(EatingGroup.id == group_id)
-            await message.reply(content=f"【发起人】：{group.initiator}\n【餐厅名称】：{group.name}\n【餐厅地点】：{group.location}\n【结车时间】：{group.end_time}\n【备注】：{group.remark}")
+            group:EatingGroup = EatingGroup.get(EatingGroup.id == group_id)
+            members:list[EatingGroupMember] = EatingGroupMember.select().where(EatingGroupMember.group_id == group_id)
+            member_names = "、".join([member.name for member in members])
+            await message.reply(content=f"【发起人】：{group.initiator}\n【餐厅名称】：{group.name}\n【餐厅地点】：{group.location}\n【发车时间】：{group.publish_time}\n【结车时间】：{group.end_time}\n【备注】：{group.remark}\n【车组成员】：{member_names}")
         except EatingGroup.DoesNotExist:
             await message.reply(content="没有这个车车哦")
         except ValueError:
