@@ -15,17 +15,19 @@ class Client(botpy.Client):
             await group_related.search(message)
         elif "/上车" in message.content:
             await group_member_related.join(message)
-        elif "下车" in message.content:
+        elif "/下车" in message.content:
             await group_member_related.leave(message)
         elif "/收车" in message.content:
             await group_related.stop(message)
         else:
-            messageResult = await message._api.post_group_message(
-                group_openid=message.group_openid,
-                msg_type=0,
-                msg_id=message.id,
-                content=f"{await mysparkai.generate_response(message.content)}")
-            _log.info(messageResult)
+            try:
+                messageResult = await message._api.post_group_message(
+                    group_openid=message.group_openid,
+                    msg_type=0,
+                    msg_id=message.id,
+                    content=f"{await mysparkai.generate_response(message.content)}")
+            except:
+                _log.info(messageResult)
 
     async def on_ready(self):
         _log.info(f"「{self.robot.name}」 准备就绪!")
