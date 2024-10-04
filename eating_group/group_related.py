@@ -55,7 +55,7 @@ async def start(message: GroupMessage):
             useful_messages["备注"] = ""
         # 结车时间变成当前时间+结车时间的datetime格式
         useful_messages["结车时间"] = datetime.datetime.now() + datetime.timedelta(hours=int(useful_messages["结车时间"]))
-        feedback = f'【发起人】：{useful_messages["发起人"]}\n【餐厅名称】：{useful_messages['餐厅名称']}\n【餐厅地点】：{useful_messages['餐厅地点']}\n【结车时间】：{useful_messages['结车时间']}\n【备注】：{useful_messages['备注']}'
+        feedback = f"【发起人】：{useful_messages['发起人']}\n【餐厅名称】：{useful_messages['餐厅名称']}\n【餐厅地点】：{useful_messages['餐厅地点']}\n【结车时间】：{useful_messages['结车时间']}\n【备注】：{useful_messages['备注']}"
         group = EatingGroup(initiator=useful_messages["发起人"],
                                    name=useful_messages["餐厅名称"], 
                                    location=useful_messages["餐厅地点"], 
